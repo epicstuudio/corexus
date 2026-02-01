@@ -20,6 +20,9 @@ jobs:
         run: |
           echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
 
+      - name: Install Heroku CLI
+        run: npm install -g heroku
+
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.13.15
         with:
