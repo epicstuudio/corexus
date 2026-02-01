@@ -1,0 +1,31 @@
+name: Deploy Corexus Frontend to Heroku
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**' # Trigger only on changes within the frontend directory
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "corexus-frontend-ali" # Must be unique in Heroku
+          heroku_email: "hello@alihamxa.com" # Your Heroku account email
+          buildpack: "heroku/nodejs" # Node.js buildpack for React app
+          usedocker: false # We are using buildpacks directly for simplicity
+          appdir: "frontend" # Specify the subdirectory for the frontend
+
+      - name: Release to Heroku (optional, for web dyno if needed)
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          heroku ps:scale web=1 -a corexus-frontend-ali

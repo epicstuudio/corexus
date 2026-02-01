@@ -1,0 +1,37 @@
+name: Deploy Corexus Backend to Heroku
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**' # Trigger only on changes within the backend directory
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Heroku Container Registry (if using Docker)
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "corexus-backend-ali" # Must be unique in Heroku
+          heroku_email: "hello@alihamxa.com" # Your Heroku account email
+          buildpack: "heroku/python"
+          usedocker: false # We are using buildpacks directly for simplicity
+          appdir: "backend" # Specify the subdirectory for the backend
+
+      - name: Release to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          heroku ps:scale web=1 -a corexus-backend-ali
