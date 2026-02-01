@@ -35,3 +35,4 @@ function App() {
 export default App
 // Initial comment
 // Trigger for new frontend app deployment
+// Trigger for explicit force push on frontend
