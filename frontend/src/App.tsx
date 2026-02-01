@@ -1,38 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// Initial comment
+// Trigger for new frontend app deployment
+// Trigger for explicit force push on frontend
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        {/* Add more routes here as we build out the app */}
+      </Routes>
+    </Router>
+  )
+}
+
+function Home() {
+  return (
+    <div>
+      <h1>Welcome to Corexus!</h1>
+      <p>This is the home page. <a href="/login">Login here</a>.</p>
+    </div>
+  )
+}
+
+function Login() {
+  return (
+    <div>
+      <h1>Login to Corexus</h1>
+      <p>Login form will go here...</p>
+    </div>
   )
 }
 
 export default App
-// Initial comment
-// Trigger for new frontend app deployment
-// Trigger for explicit force push on frontend
