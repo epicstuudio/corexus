@@ -5,6 +5,8 @@ const config: Config = {
   content: [
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
+    './frontend/src/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
   prefix: "",
   theme: {
