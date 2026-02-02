@@ -4,7 +4,7 @@ const config: Config = {
   darkMode: ["class"],
   content: [
     './index.html',
-    './corexus/frontend/src/**/*.{js,ts,jsx,tsx}',
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   prefix: "",
   theme: {
