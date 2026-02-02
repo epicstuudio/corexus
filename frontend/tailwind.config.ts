@@ -4,10 +4,7 @@ const config: Config = {
   darkMode: ["class"],
   content: [
     './index.html',
-    './frontend/index.html',
-    './frontend/src/**/*.{js,ts,jsx,tsx}',
-    './frontend/components/**/*.{js,ts,jsx,tsx}',
-    './frontend/src/components/**/*.{js,ts,jsx,tsx}',
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   prefix: "",
   theme: {
