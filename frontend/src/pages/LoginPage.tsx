@@ -12,6 +12,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     console.log('Login attempt:', { username, password });
     // TODO: Implement actual API call for login
+    // Trigger a new deployment
   };
 
   return (
