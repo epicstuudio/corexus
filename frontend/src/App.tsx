@@ -1,33 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
 import './App.css'
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
         {/* Add more routes here as we build out the app */}
       </Routes>
     </Router>
-  )
-}
-
-function Home() {
-  return (
-    <div>
-      <h1>Welcome to Corexus!</h1>
-      <p>This is the home page. <a href="/login">Login here</a>.</p>
-    </div>
-  )
-}
-
-function Login() {
-  return (
-    <div>
-      <h1>Login to Corexus</h1>
-      <p>Login form will go here...</p>
-    </div>
   )
 }
 
