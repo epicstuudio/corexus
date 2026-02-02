@@ -6,9 +6,12 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import Session
 
-# Configuration
+from .database import get_db
+from .models import User as DBUser
+
 SECRET_KEY = os.environ.get("SECRET_KEY", "your-super-secret-key")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -24,10 +27,9 @@ class TokenData(BaseModel):
     username: Optional[str] = None
 
 class User(BaseModel):
-    username: str
-    email: Optional[str] = None
+    email: EmailStr
     full_name: Optional[str] = None
-    disabled: Optional[bool] = None
+    is_active: Optional[bool] = True
 
 class UserInDB(User):
     hashed_password: str
@@ -51,23 +53,21 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 # In-memory "database" for MVP
 # TODO: Replace with a proper database (PostgreSQL)
-fake_users_db = {
-    "mrrobot": {
-        "username": "mrrobot",
-        "email": "mrrobot@corexus.net",
-        "full_name": "Mr Robot",
-        "hashed_password": get_password_hash("supersecret"), # Default password for testing
-        "disabled": False,
-    }
-}
+# fake_users_db = {
+#     "mrrobot": {
+#         "email": "mrrobot@corexus.net",
+#         "hashed_password": get_password_hash("supersecret"),
+#         "disabled": False,
+#     }
+# }
 
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
-    return None
+def get_user(db: Session, email: EmailStr):
+    return db.query(DBUser).filter(DBUser.email == email).first()
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -75,18 +75,18 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(username=email) # Keep username field for compatibility but store email
     except JWTError:
         raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
+    user = get_user(db, email=token_data.username) # Pass email to get_user
     if user is None:
         raise credentials_exception
     return user
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)):
-    if current_user.disabled:
+async def get_current_active_user(current_user: DBUser = Depends(get_current_user)):
+    if not current_user.is_active:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user")
     return current_user
