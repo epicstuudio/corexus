@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "echo \"--- Current working directory for build: $(pwd) ---\" && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "serve -s dist"
