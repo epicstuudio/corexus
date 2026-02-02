@@ -1,7 +1,3 @@
-// Initial comment
-// Trigger for new frontend app deployment
-// Trigger for explicit force push on frontend
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 

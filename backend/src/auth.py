@@ -1,6 +1,6 @@
-import os
 from datetime import datetime, timedelta
 from typing import Optional
+import os
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 # Configuration
-SECRET_KEY = os.environ.get("SECRET_KEY", "your-super-secret-key") # Replaced placeholder with environment variable
+SECRET_KEY = os.environ.get("SECRET_KEY", "your-super-secret-key")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

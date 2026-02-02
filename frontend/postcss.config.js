@@ -1,6 +1,9 @@
-export default async () => ({
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
+
+export default {
   plugins: [
-    (await import('tailwindcss')).default,
-    (await import('autoprefixer')).default,
+    tailwindcss(),
+    autoprefixer()
   ],
-})
+}
