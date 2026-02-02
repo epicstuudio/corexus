@@ -51,6 +51,7 @@ async def read_users_me(current_user: Annotated[DBUser, Depends(get_current_acti
 
 @app.get("/")
 async def root():
+    # Triggering rebuild for Heroku cache clear
     return {"message": "Welcome to Corexus Backend!"}
 
 @app.get("/status")
