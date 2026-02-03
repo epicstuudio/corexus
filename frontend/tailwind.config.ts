@@ -2,7 +2,14 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   darkMode: ["class"],
-  content: [],
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    '../**/src/**/*.{js,ts,jsx,tsx}', // For files relative to monorepo root
+    '../**/index.html',
+    './node_modules/@radix-ui/**/*.{js,ts,jsx,tsx}', // Shadcn UI components
+    './node_modules/tailwindcss-animate/**/*.{js,ts,jsx,tsx}', // For animations
+  ],
   prefix: "",
   theme: {
     container: {
